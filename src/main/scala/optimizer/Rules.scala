@@ -9,7 +9,6 @@
 package optimizer
 
 import execution.ExecutionPlan
-import optimizer.rules._
 import catalog.Catalog
 
 /**

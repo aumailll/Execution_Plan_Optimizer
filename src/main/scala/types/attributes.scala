@@ -5,13 +5,14 @@
 
 package types
 
+import expression.Expression
 
 /**
  * Trait representing a generic attribute with a name.
  *
  * @param name The name of the attribute.
  */
-trait Attribute(name: String)
+trait Attribute(name: String) extends Expression
 
 /**
  * Represents an unresolved attribute in a SQL query. An unresolved attribute is one that is not fully qualified with a 

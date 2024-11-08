@@ -6,8 +6,8 @@
 package optimizer
 
 import optimizer.rules._
-import execution.*
-import catalog.*
+import execution._
+import catalog._
 
 trait sql_execution_plan_optimizers {
   def optimize(executionPlan: ExecutionPlan, catalog: Catalog): ExecutionPlan

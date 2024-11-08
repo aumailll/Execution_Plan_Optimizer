@@ -21,11 +21,11 @@
 
 package optimizer.rules
 
-import expression.{Expression, NamedExpression, Add, Subtract, Multiply, Divide, Literal}
-import execution.{ExecutionPlan, Project}
-import optimizer.Rules
-import catalog.Catalog
-import types.DataType
+import expression._
+import execution._
+import optimizer._
+import catalog._
+import types._
 
 class SimplifyArithmeticRule extends Rules {
   /**
@@ -42,7 +42,7 @@ class SimplifyArithmeticRule extends Rules {
         expressions.exists {
           // Check if it's a NamedExpression (otherwise, the rule is not applicable)
           case NamedExpression(_, expr) => isArithmeticSimplifiable(expr)
-          case _ => false
+          case null => false
         }
       case _ => false
     }
@@ -73,32 +73,35 @@ class SimplifyArithmeticRule extends Rules {
 
   /**
    * Simplify an Unsimplified Expression
-   * @param expression Arithmetic Expression 
+   * @param expression Arithmetic Expression
    * @return Simplified Expression
    */
   private def simplifyExpression(expression: Expression): Expression = {
     expression match {
       // Add or Subtract by 0
       case Add(Literal(0, _), right)           => simplifyExpression(right)
-      case Subtract(Literal(0, _), right)      => simplifyExpression(right)
+      case Subtract(Literal(0, _), right)      => Negate(simplifyExpression(right))
       case Add(left, Literal(0, _))            => simplifyExpression(left)
       case Subtract(left, Literal(0, _))       => simplifyExpression(left)
 
-      // Multiply or Divide by 1 
+      // Multiply or Divide by 1
       case Multiply(Literal(1, _), right)  => simplifyExpression(right)
       case Multiply(left, Literal(1, _))   => simplifyExpression(left)
       case Divide(Literal(1, _), right)    => simplifyExpression(right)
       case Divide(left, Literal(1, _))     => simplifyExpression(left)
-      
+
       // Multiply by 0
       case Multiply(Literal(0, _), _)   => Literal(0, DataType.IntType)
       case Multiply(_, Literal(0, _))   => Literal(0, DataType.IntType)
-      
+
       // Nested operations
       case Add(left, right)       => Add(simplifyExpression(left), simplifyExpression(right))
       case Subtract(left, right)  => Subtract(simplifyExpression(left), simplifyExpression(right))
       case Multiply(left, right)  => Multiply(simplifyExpression(left), simplifyExpression(right))
       case Divide(left, right)    => Divide(simplifyExpression(left), simplifyExpression(right))
+
+      // Default case
+      case other => other
     }
   }
 

@@ -19,3 +19,10 @@ trait Expression
  * @return A named expression that associates the given alias with the specified expression.
  */
 case class NamedExpression(name: String, expression: Expression) extends Expression
+
+/**
+ * // Negate case class for representing negation of an expression (e.g., 0 - a becomes -a)
+ *
+ * @param expr Expression
+ */
+case class Negate(expr: Expression) extends Expression
