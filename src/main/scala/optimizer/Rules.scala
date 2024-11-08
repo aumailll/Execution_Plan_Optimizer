@@ -19,19 +19,3 @@ trait Rules {
   def apply(executionPlan: ExecutionPlan, catalog: Catalog): (ExecutionPlan, Catalog)
   def isApplicable(executionPlan: ExecutionPlan, catalog: Catalog): Boolean
 }
-
-
-object RuleSet {
-  private val allRules: Seq[Rules] = Seq(new SimplifyRule())
-
-  def applyRules(plan: ExecutionPlan, catalog: Catalog): (ExecutionPlan, Catalog) = {
-    allRules.foldLeft((plan, catalog)) {
-      case ((currentPlan, currentCatalog), rule) =>
-        if (rule.isApplicable(currentPlan, currentCatalog)) {
-          rule.apply(currentPlan, currentCatalog)
-        } else {
-          (currentPlan, currentCatalog)
-        }
-    }
-  }
-}

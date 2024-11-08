@@ -23,7 +23,7 @@ case class Add(left: Expression, right: Expression) extends Expression
  * @param right The right operand of the subtraction, which must also be an `Expression`.
  * @return An `Expression` that represents the result of subtracting the right operand from the left.
  */
-case class Substract(left: Expression, right: Expression) extends Expression
+case class Subtract(left: Expression, right: Expression) extends Expression
 
 /**
  * Represents a multiplication operation between two expressions.

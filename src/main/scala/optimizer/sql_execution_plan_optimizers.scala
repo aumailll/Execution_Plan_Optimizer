@@ -5,12 +5,26 @@
 
 package optimizer
 
-import catalog._
-import execution._
+import optimizer.rules._
+import execution.*
+import catalog.*
 
 trait sql_execution_plan_optimizers {
-  def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
-    val (optimizedPlan, _) = RuleSet.applyRules(execution_plan, catalog)
-    optimizedPlan
+  def optimize(executionPlan: ExecutionPlan, catalog: Catalog): ExecutionPlan
+}
+
+class SqlExecutionPlanOptimizer extends sql_execution_plan_optimizers{
+  override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
+    // Create an instance of the ArithmeticRule
+    val simplifyArithmeticRule = new SimplifyArithmeticRule
+
+    // Return an Optimized Execution Plan or the old one is the rule cannot be applied
+    if (simplifyArithmeticRule.isApplicable(execution_plan, catalog)) {
+      // Apply the rule and return a new Execution Plan
+      val (optimizedPlan, _) = simplifyArithmeticRule.apply(execution_plan, catalog)
+      optimizedPlan
+    } else {
+      execution_plan
+    }
   }
 }
