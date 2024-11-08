@@ -1,3 +1,8 @@
+/** ====================================================================================================================
+ * OPTIMIZER - SqlExecutionPlanArithmeticOptimizerTest
+ * ====================================================================================================================
+ */
+
 package optimizer
 
 import org.scalatest.funsuite.AnyFunSuite
@@ -22,7 +27,7 @@ class SqlExecutionPlanArithmeticOptimizerTest extends AnyFunSuite {
     ), null)
 
     val catalog: Catalog = Catalog(TableCatalog(Map()), SubQueryAliasCatalog(Map()))
-    val optimizer = new SqlExecutionPlanOptimizer
+    val optimizer = new SqlExecutionPlanArithmeticOptimizer
     val optimizedPlan = optimizer.optimize(inputPlan, catalog)
 
     if (optimizedPlan == expectedOutput) {
@@ -47,7 +52,7 @@ class SqlExecutionPlanArithmeticOptimizerTest extends AnyFunSuite {
     ), null)
 
     val catalog: Catalog = Catalog(TableCatalog(Map()), SubQueryAliasCatalog(Map()))
-    val optimizer = new SqlExecutionPlanOptimizer
+    val optimizer = new SqlExecutionPlanArithmeticOptimizer
     val optimizedPlan = optimizer.optimize(inputPlan, catalog)
 
     if (optimizedPlan == expectedOutput) {
@@ -72,7 +77,7 @@ class SqlExecutionPlanArithmeticOptimizerTest extends AnyFunSuite {
     ), null)
 
     val catalog: Catalog = Catalog(TableCatalog(Map()), SubQueryAliasCatalog(Map()))
-    val optimizer = new SqlExecutionPlanOptimizer
+    val optimizer = new SqlExecutionPlanArithmeticOptimizer
     val optimizedPlan = optimizer.optimize(inputPlan, catalog)
 
     if (optimizedPlan == expectedOutput) {
@@ -97,7 +102,7 @@ class SqlExecutionPlanArithmeticOptimizerTest extends AnyFunSuite {
     ), null)
 
     val catalog: Catalog = Catalog(TableCatalog(Map()), SubQueryAliasCatalog(Map()))
-    val optimizer = new SqlExecutionPlanOptimizer
+    val optimizer = new SqlExecutionPlanArithmeticOptimizer
     val optimizedPlan = optimizer.optimize(inputPlan, catalog)
 
     if (optimizedPlan == expectedOutput) {
@@ -122,7 +127,7 @@ class SqlExecutionPlanArithmeticOptimizerTest extends AnyFunSuite {
     ), null)
 
     val catalog: Catalog = Catalog(TableCatalog(Map()), SubQueryAliasCatalog(Map()))
-    val optimizer = new SqlExecutionPlanOptimizer
+    val optimizer = new SqlExecutionPlanArithmeticOptimizer
     val optimizedPlan = optimizer.optimize(inputPlan, catalog)
 
     if (optimizedPlan == expectedOutput) {

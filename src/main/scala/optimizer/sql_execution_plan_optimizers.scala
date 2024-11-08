@@ -9,11 +9,17 @@ import optimizer.rules._
 import execution._
 import catalog._
 
+/**
+ * Trait for Execution Plan Optimizer
+ */
 trait sql_execution_plan_optimizers {
   def optimize(executionPlan: ExecutionPlan, catalog: Catalog): ExecutionPlan
 }
 
-class SqlExecutionPlanOptimizer extends sql_execution_plan_optimizers{
+/**
+ * Execution Plan Optimizer for SQL for arithmetic expression
+ */
+class SqlExecutionPlanArithmeticOptimizer extends sql_execution_plan_optimizers{
   override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
     // Create an instance of the ArithmeticRule
     val simplifyArithmeticRule = new SimplifyArithmeticRule
@@ -28,3 +34,22 @@ class SqlExecutionPlanOptimizer extends sql_execution_plan_optimizers{
     }
   }
 }
+
+/**
+ * Execution Plan Optimizer for SQL for '*' Projection
+ */
+class SqlExecutionPlanStarOptimizer extends sql_execution_plan_optimizers {
+  override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
+    // Create an instance of the StarProjectRule
+    val simplifyStarRule = new SimplifyStarProjectRule
+    
+    // Return an Optimized Execution Plan or the old one is the rule cannot be applied
+    if (simplifyStarRule.isApplicable(execution_plan, catalog)) {
+      val (optimizedPlan, _) = simplifyStarRule.apply(execution_plan, catalog)
+      optimizedPlan
+    } else {
+      execution_plan
+    }
+  }
+}
+
