@@ -53,3 +53,21 @@ class SqlExecutionPlanStarOptimizer extends sql_execution_plan_optimizers {
   }
 }
 
+/**
+ * Execution Plan Optimizer for SQL for UnresolvedAttributes to become ResolvedAttributes
+ */
+class SqlExecutionPlanResolveUnresolvedOptimizer extends sql_execution_plan_optimizers {
+  override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
+    // Create an instance of the ResolveUnresolvedAttributeRule
+    val resolveUnresolvedAttributeRule = new ResolveUnresolvedAttributeRule
+
+    // Return an Optimized Execution Plan or the old one if the rule cannot be applied
+    if (resolveUnresolvedAttributeRule.isApplicable(execution_plan, catalog)) {
+      // Apply the rule and return a new Execution Plan
+      val (optimizedPlan, _) = resolveUnresolvedAttributeRule.apply(execution_plan, catalog)
+      optimizedPlan
+    } else {
+      execution_plan
+    }
+  }
+}
