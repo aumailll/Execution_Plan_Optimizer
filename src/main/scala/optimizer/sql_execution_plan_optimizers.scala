@@ -88,6 +88,9 @@ class SqlExecutionPlanSubQueryAliasOptimizer extends sql_execution_plan_optimize
   }
 }
 
+/**
+ * Execution Plan Optimizer for SQL to Replace UnresolvedAttribute(alias) by the expression mapped with this alias
+ */
 class SqlExecutionPlanReplaceUnresolvedAttributes extends sql_execution_plan_optimizers {
   override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
     val replaceUnresolvedAttributesRule = new ReplaceUnresolvedAttributesRule
@@ -101,4 +104,18 @@ class SqlExecutionPlanReplaceUnresolvedAttributes extends sql_execution_plan_opt
   }
 }
 
+/**
+ * Execution Plan Optimizer for SQL to Prune unused columns
+ */
+class SqlExecutionPlanPruneUnusedColumns extends sql_execution_plan_optimizers {
+  override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
+    val pruneUnusedColumnsRule = new PruneUnusedColumnsRule
 
+    if (pruneUnusedColumnsRule.isApplicable(execution_plan, catalog)) {
+      val (optimizedPlan, _) = pruneUnusedColumnsRule.apply(execution_plan, catalog)
+      optimizedPlan
+    } else {
+      execution_plan
+    }
+  }
+}
