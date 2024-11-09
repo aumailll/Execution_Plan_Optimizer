@@ -87,3 +87,18 @@ class SqlExecutionPlanSubQueryAliasOptimizer extends sql_execution_plan_optimize
     }
   }
 }
+
+class SqlExecutionPlanReplaceUnresolvedAttributes extends sql_execution_plan_optimizers {
+  override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
+    val replaceUnresolvedAttributesRule = new ReplaceUnresolvedAttributesRule
+
+    if (replaceUnresolvedAttributesRule.isApplicable(execution_plan, catalog)) {
+      val (optimizedPlan, _) = replaceUnresolvedAttributesRule.apply(execution_plan, catalog)
+      optimizedPlan
+    } else {
+      execution_plan
+    }
+  }
+}
+
+
