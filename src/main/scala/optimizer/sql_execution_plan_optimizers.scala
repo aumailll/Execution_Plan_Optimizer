@@ -71,3 +71,19 @@ class SqlExecutionPlanResolveUnresolvedOptimizer extends sql_execution_plan_opti
     }
   }
 }
+
+/**
+ * Execution Plan Optimizer for SQL for SubQueryAlias
+ */
+class SqlExecutionPlanSubQueryAliasOptimizer extends sql_execution_plan_optimizers {
+  override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
+    val simplifySubQueryAliasRule = new SimplifySubQueryAliasRule
+
+    if (simplifySubQueryAliasRule.isApplicable(execution_plan, catalog)) {
+      val (optimizedPlan, _) = simplifySubQueryAliasRule.apply(execution_plan, catalog)
+      optimizedPlan
+    } else {
+      execution_plan
+    }
+  }
+}
