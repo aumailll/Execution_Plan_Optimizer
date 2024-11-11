@@ -119,3 +119,19 @@ class SqlExecutionPlanPruneUnusedColumns extends sql_execution_plan_optimizers {
     }
   }
 }
+
+/**
+ * Execution Plan Optimizer for SQL to merge operations
+ */
+class SqlExecutionPlanFusionOptimizer extends sql_execution_plan_optimizers {
+  override def optimize(execution_plan: ExecutionPlan, catalog: Catalog): ExecutionPlan = {
+    val fusionRule = new FusionRule
+
+    if (fusionRule.isApplicable(execution_plan, catalog)) {
+      val (optimizedPlan, _) = fusionRule.apply(execution_plan, catalog)
+      optimizedPlan
+    } else {
+      execution_plan
+    }
+  }
+}
